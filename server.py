@@ -1,25 +1,10 @@
-#!/usr/bin/env python
-# coding: utf-8
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
 
 
 pip install flwr torch flask
 
 
-# In[ ]:
+
 
 
 import flwr as fl
@@ -155,7 +140,6 @@ if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5001)
 
 
-# In[ ]:
 
 
 
