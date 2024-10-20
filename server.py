@@ -1,12 +1,4 @@
 
-
-
-pip install flwr torch flask
-
-
-
-
-
 import flwr as fl
 import torch
 import torch.nn as nn
