@@ -1,4 +1,3 @@
-
 import flwr as fl
 import torch
 import torch.nn as nn
@@ -106,27 +105,27 @@ class CustomFedAvg(fl.server.strategy.FedAvg):
         return super().aggregate_fit(rnd, results, failures)
 
 # Start Flower server
-# Start Flower server with port as an argument
-def start_flower_server(free_port):
+def start_flower_server():
+    # Find a free port dynamically
+    free_port = find_free_port(8080)
     print(f"Starting Flower server on free port: {free_port}")
-    strategy = CustomFedAvg(min_available_clients=2)
-    fl.server.start_server(server_address=f"0.0.0.0:{free_port}", strategy=strategy)
 
-# Flask route to start Flower server and return the port
+    # Use the found port
+    strategy = CustomFedAvg(min_available_clients=2)
+    fl.server.start_server(server_address=f"127.0.0.1:{free_port}", strategy=strategy)
+#     fl.server.start_server(server_address=f"0.0.0.0:{free_port}", strategy=strategy)
+
+
+# Flask setup to control Flower server
+app = Flask(__name__)
+
 @app.route('/start_server', methods=['GET'])
 def start_server():
-    free_port = find_free_port(8080)  # Find a free port
-    server_thread = threading.Thread(target=start_flower_server, args=(free_port,))
+    # Run the Flower server in a separate thread
+    server_thread = threading.Thread(target=start_flower_server)
     server_thread.start()
-    return jsonify({"status": "Flower server started", "port": free_port}), 200
-
+    return jsonify({"status": "Flower server started"}), 200
 
 if __name__ == "__main__":
     # Start the Flask app
-    app.run(host='0.0.0.0', port=5001,debug=True)
-
-
-
-
-
-
+    app.run(host='0.0.0.0', port=5001)
