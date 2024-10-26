@@ -110,11 +110,10 @@ def start_flower_server():
     free_port = find_free_port(8080)
     print(f"Starting Flower server on free port: {free_port}")
 
-    # Use the found port
+    # Use the public IP address of your EC2 instance
+    your_ec2_ip = "3.84.26.152"
     strategy = CustomFedAvg(min_available_clients=2)
-    fl.server.start_server(server_address=f"127.0.0.1:{free_port}", strategy=strategy)
-#     fl.server.start_server(server_address=f"0.0.0.0:{free_port}", strategy=strategy)
-
+    fl.server.start_server(server_address=f"{your_ec2_ip}:{free_port}", strategy=strategy)
 
 # Flask setup to control Flower server
 app = Flask(__name__)
@@ -127,5 +126,5 @@ def start_server():
     return jsonify({"status": "Flower server started"}), 200
 
 if __name__ == "__main__":
-    # Start the Flask app
+    # Start the Flask app on all interfaces, so it is accessible from the public IP
     app.run(host='0.0.0.0', port=5001)
