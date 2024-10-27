@@ -88,14 +88,16 @@ def start_flower_server():
 # Flask setup to control Flower server
 app = Flask(__name__)
 
-@app.route('/start_server', methods=['GET'])
+@app.route('/', methods=['GET'])
 def start_server():
     global flower_port
     # Run the Flower server in a separate thread
-    server_thread = threading.Thread(target=start_flower_server)
-    server_thread.start()
+#     server_thread = threading.Thread(target=start_flower_server)
+#     server_thread.start()
+    start_flower_server()
     # Return the Flower server's port to the client
-    return jsonify({"status": "Flower server started", "port": flower_port}), 200
+    print("flower sever started")
+    return jsonify({"status": "Flower server started", "port": flower_port},200)
 
 if __name__ == "__main__":
     # Start the Flask app
